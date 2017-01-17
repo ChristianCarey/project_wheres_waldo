@@ -19,6 +19,13 @@ W.controller = (function(model, view){
     })
   };
 
+  var _deleteTag = function(id) {
+    var tag = model.deleteTag(id)
+      .done(function(tag){
+        view.removeTag(tag);
+      });
+  };
+
   var _showDropdown = function() {
     var characters = model.getCharacters();
     view.renderDropdown(characters);
@@ -28,6 +35,7 @@ W.controller = (function(model, view){
   var _handlers = {
     showDropdown: _showDropdown,
     createTag: _createTag,
+    deleteTag: _deleteTag
 
   };
 

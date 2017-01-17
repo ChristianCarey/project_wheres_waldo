@@ -23,6 +23,14 @@ class TagsController < ApplicationController
     end
   end
 
+  def destroy
+    @tag = Tag.find(params[:id])
+    @tag.destroy
+    respond_to do |format|
+      format.json { render @tag, locals: { tag: @tag } }
+    end
+  end
+
   private
 
     def strong_tag_params

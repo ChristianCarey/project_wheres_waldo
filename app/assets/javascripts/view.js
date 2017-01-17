@@ -11,6 +11,7 @@ W.view = (function(){
     _setConstants();
     _setSearchHandlers();
     _setCreateTagHandler();
+    _setDeleteTagHandler();
   };
 
   var moveTagger = function(x, y) {
@@ -25,15 +26,18 @@ W.view = (function(){
   var renderTag = function(tag) {
     var $tag = $('<div>')
       .addClass('tag new-tag')
+      .attr('data-id', tag.id)
       .css({
         left: tag.x,
         top: tag.y
-      })
-      .attr('data-character', tag.character.id)
+      });
     var $hoverInfo = $('<span>').addClass('hover-info');
+    var $deleteTag = $('<span class="delete-tag">').text('x');
+    $deleteTag.attr('data-id', tag.id);
     $hoverInfo.text(tag.character.name)
     $tag.append($hoverInfo);
-    $tag.append($('<span class="delete-tag">').text('x'));
+    $tag.append($deleteTag)
+      
     // $tag.append($('<span class="arrow-up">'));
     $imgContainer.append($tag);
     _setSearchHandlers();
@@ -63,7 +67,12 @@ W.view = (function(){
 
   var getPhotoId = function() {
     return PHOTO_ID;
-  }
+  };
+
+  var removeTag = function(tag) {
+    var $tag = $('.tag[data-id = "' + tag.id + '"]');
+    $tag.remove();
+  };
 
   var _freezeTagger = function() {
     $imgContainer.off('mousemove');
@@ -123,7 +132,15 @@ W.view = (function(){
       var characterId = $(e.target).data('id');
       _handlers.createTag(x, y, characterId, PHOTO_ID);
     });
-  }
+  };
+
+  var _setDeleteTagHandler = function() {
+    $('.img-container').on('click', '.delete-tag', function(e) {
+      console.log("deleting");
+      var tagId = $(e.target).data('id');
+      _handlers.deleteTag(tagId)
+    })
+  };
 
   return {
     init: init,
@@ -132,7 +149,8 @@ W.view = (function(){
     renderDropdown: renderDropdown,
     listenForNewTag: listenForNewTag,
     getPhotoId: getPhotoId,
-    renderBatchTags: renderBatchTags
+    renderBatchTags: renderBatchTags,
+    removeTag: removeTag
   }
 
 }())

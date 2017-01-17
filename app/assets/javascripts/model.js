@@ -37,7 +37,28 @@ W.model = function() {
         _tags.push(newTag);
       }
     })
-  }
+  };
+
+  var deleteTag = function(id) {
+    return $.ajax({
+      url: '/tags/'  + id,
+      type: 'DELETE',
+      success: function(tag) {
+        _tags = _tags.filter(function(oldTag) {
+          return oldTag.id !== tag.id;
+        });
+        _characters.forEach(function(character) {
+          if (character.id === tag.character.id) {
+            _toggleTagged(character.id);
+           } 
+        })
+      }
+    });
+  };
+
+  var getTags = function() {
+    return _tags;
+  };
 
   var _characters, _tags = [], PHOTO_ID;
 
@@ -66,14 +87,13 @@ W.model = function() {
     })[0];
   };
 
-  var getTags = function() {
-    return _tags;
-  }
+
   return {
     getCharacters: getCharacters,
     init: init,
     createTag: createTag,
-    getTags: getTags
+    getTags: getTags,
+    deleteTag: deleteTag
   }
 
 

@@ -4,5 +4,7 @@ Rails.application.routes.draw do
     resources :tags
   end
 
+  resources :tags
+
   root 'photos#index'
 end
