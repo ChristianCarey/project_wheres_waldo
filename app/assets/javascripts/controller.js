@@ -16,19 +16,15 @@ W.controller = (function(model, view){
     view.initTag(e);
   };
 
-  var _taggerFollow = function(e) {
-    view.moveTagger(e);
-  };
-
   var _showDropdown = function() {
     var characters = model.getCharacters();
     view.renderDropdown(characters);
+    view.listenForNewTag();
   }
 
   var _handlers = {
     showDropdown: _showDropdown,
-    createTag: _createTag,
-    taggerFollow: _taggerFollow
+    createTag: _createTag
   };
 
   return {

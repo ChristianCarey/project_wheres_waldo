@@ -2,18 +2,20 @@ var W = W || {};
 
 W.view = (function(){
   var $tagger, $body, $img, $imgContainer,
-      IMG_TOP, IMG_LEFT, IMG_BOTTOM, IMG_RIGHT
+      IMG_TOP, IMG_LEFT, IMG_BOTTOM, IMG_RIGHT,
+      _handlers
 
   var init = function(handlers) {
+    _handlers = handlers
     _setDynamicElements();
     _setConstants();
-    _setHandlers(handlers);
+    _setSearchHandlers();
   };
 
-  var moveTagger = function(e) {
+  var moveTagger = function(x, y) {
     // offset to center on cursor
-    var leftEdge = e.pageX - 50;
-    var topEdge = e.pageY - 50;
+    var leftEdge = x - 50;
+    var topEdge = y - 50;
 
     $tagger.css({ left: leftEdge, top: topEdge})
     $dropdown.css({ left: leftEdge, top: topEdge + 100})
@@ -36,7 +38,34 @@ W.view = (function(){
       $li.text(character);
       $dropdown.append($li);
     })
-    $dropdown.show()
+    $dropdown.show();
+  };
+
+  var listenForNewTag = function() {
+    _freezeTagger();
+    _attachCancelListener();
+  }
+
+  var _freezeTagger = function() {
+    $imgContainer.off('mousemove');
+    $dropdown.submit(_handlers.createTag);
+  };
+
+  var _attachCancelListener = function() {
+    $mainImg.off('click');
+    $mainImg.click(function(e) {
+      moveTagger(e.pageX, e.pageY)
+      _setSearchHandlers()
+    })
+  };
+
+  var _unfreezeTagger = function() {
+    $imgContainer.mousemove(_handlers.taggerFollow);
+  };
+
+  var _hideDropdown = function() {
+    $dropdown.hide();
+    $('.character').remove();
   };
 
   var _setDynamicElements = function() {
@@ -47,11 +76,20 @@ W.view = (function(){
     $dropdown = $('.dropdown');
   };
 
-  var _setHandlers = function(handlers) {
-    $mainImg.click(handlers.showDropdown);  
-    $dropdown.submit(handlers.createTag);
-    $imgContainer.mousemove(handlers.taggerFollow)
+  var _setSearchHandlers = function() {
+    _unfreezeTagger();
+    _hideDropdown();
+    $mainImg.off('click');
+    $mainImg.click(_handlers.showDropdown);  
+    $imgContainer.mousemove(function(e){
+      moveTagger(e.pageX, e.pageY)
+    })
   };
+
+  var _setFrozenHandlers = function() {
+    _freezeTagger();
+    _attachCancelListener();
+  }
 
   var _setConstants = function() {
     IMG_TOP = $mainImg.offset().top;
@@ -64,7 +102,8 @@ W.view = (function(){
     init: init,
     moveTagger: moveTagger,
     initTag: initTag,
-    renderDropdown: renderDropdown
+    renderDropdown: renderDropdown,
+    listenForNewTag: listenForNewTag
   }
 
 }())
