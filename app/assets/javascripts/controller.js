@@ -8,9 +8,12 @@ W.controller = (function(model, view){
     view.init(_handlers);
   };
 
-  var _createTag = function(x, y, characterId) {
-    var tag = model.createTag(x, y, characterId);
-    view.renderTag(tag);
+  var _createTag = function(x, y, characterId, photoId) {
+    var tag = model.createTag(x, y, characterId, photoId);
+    tag.done(function(tag) {
+      console.log(tag)
+      view.renderTag(tag);
+    })
   };
 
   var _showDropdown = function() {

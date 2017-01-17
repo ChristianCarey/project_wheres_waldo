@@ -3,41 +3,42 @@ var W = W || {};
 W.model = function() {
 
   var init = function() {
-    _characters = [
-      { id: 0, name: 'waldo' },
-      { id: 1, name: 'wenda' },
-      { id: 2, name: 'odlaw' },
-      { id: 3, name: 'woof' },
-      { id: 4, name: 'wizard whitebeard' },
-    ];
+    _fetchCharacters().done(function(characters) {
+      _characters = characters;
+    })
   };
 
   var getCharacters = function() {
     return _characters;
   };
 
-  var createTag = function(x, y, id) {
-    var tag = new _Tag(x, y, id)
-    // _saveTag(tag);
-    _tags.push(tag);
-    return tag;
+  var createTag = function(x, y, characterId, photoId) {
+    var tagData = {
+          character_id: characterId,
+          photo_id: photoId,
+          x: x,
+          y: y
+        }
+    return $.ajax({
+      method: 'POST',
+      data: { "tag": tagData },
+      url: '/tags.json',
+      error: function(err) {
+        console.log(err)
+      }
+    })
   }
 
   var _characters, _tags = [];
+
+  var _fetchCharacters = function() {
+    
+  }
 
   var _Dropdown = function Dropdown(items, top, left) {
     this.items = items;
     this.top = top;
     this.left = left;
-  };
-
-  var _Tag = function Tag(x, y, id) {
-    this.x = x;
-    this.y = y;
-    this.characterId = id;
-    this.getCharacter = function() {
-      return _findCharacter(id);
-    }
   };
 
   var _findCharacter = function(id) {

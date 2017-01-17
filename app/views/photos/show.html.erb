@@ -1,5 +1,5 @@
 <div class="img-container">
-  <%= image_tag @photo.url %>
+  <%= image_tag @photo.url, {class: 'image', data: { id: @photo.id }} %>
 </div>
 <div class="tagging-cursor"></div>
 <ul class="dropdown"></ul>

@@ -2,7 +2,7 @@ var W = W || {};
 
 W.view = (function(){
   var $tagger, $body, $img, $imgContainer,
-      IMG_TOP, IMG_LEFT, IMG_BOTTOM, IMG_RIGHT,
+      IMG_TOP, IMG_LEFT, IMG_BOTTOM, IMG_RIGHT, PHOTO_ID,
       _handlers
 
   var init = function(handlers) {
@@ -32,7 +32,7 @@ W.view = (function(){
       .attr('data-character', tag.characterId)
     var $hoverInfo = $('<span>').addClass('hover-info');
     $hoverInfo.text(tag.getCharacter().name)
-    console.log(tag.getCharacter());
+    // console.log(tag.getCharacter());
     $tag.append($hoverInfo);
     // $tag.append($('<span class="arrow-up">'));
     $imgContainer.append($tag);
@@ -60,7 +60,7 @@ W.view = (function(){
       var x = $tagger.css('left');
       var y = $tagger.css('top');
       var characterId = $(e.target).data('id');
-      _handlers.createTag(x, y, characterId);
+      _handlers.createTag(x, y, characterId, PHOTO_ID);
     });
   };
 
@@ -92,7 +92,6 @@ W.view = (function(){
   var _setSearchHandlers = function() {
     _unfreezeTagger();
     _hideDropdown();
-    $mainImg.off('click');
     $mainImg.click(_handlers.showDropdown);  
     $imgContainer.mousemove(function(e){
       moveTagger(e.pageX, e.pageY)
@@ -109,6 +108,7 @@ W.view = (function(){
     IMG_BOTTOM = $mainImg.offset().top + $mainImg.height();
     IMG_LEFT = $mainImg.offset().left;
     IMG_RIGHT = $mainImg.offset().left + $mainImg.width();
+    PHOTO_ID = $('.image').data('id');
   }
 
   return {

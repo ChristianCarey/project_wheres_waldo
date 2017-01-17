@@ -2,7 +2,7 @@ class PhotosController < ApplicationController
   before_action :set_photo, only: [:show]
 
   def index
-    redirect_to photo_path(id: 1)
+    redirect_to Photo.first
   end
 
   def show
