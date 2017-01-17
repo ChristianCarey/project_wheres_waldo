@@ -13,9 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require dropdown
-//= require tag
 //= require view
+//= require model
 //= require controller
 //= require Waldo
 //= require_tree .

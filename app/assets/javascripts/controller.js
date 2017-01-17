@@ -4,18 +4,15 @@ W.controller = (function(model, view){
   var Tag, Dropdown;
 
   var init = function() {
-    _setConstructors();
+    model.init();
     view.init(_handlers);
   };
 
-  var _setConstructors = function() {
-    Tag = model.Tag;
-    Dropdown = model.Dropdown;
-  }
-
-  var _createTag = function(e) {
+  var _createTag = function() {
     // TODO .push(tag) into model if successful creation
     // var tag = new Tag(e.pageX, e.pageY);
+    // var tag = model.createTag(x,y); view would find x and y from e
+    // view.initTag(tag);
     view.initTag(e);
   };
 
@@ -23,7 +20,13 @@ W.controller = (function(model, view){
     view.moveTagger(e);
   };
 
+  var _showDropdown = function() {
+    var characters = model.getCharacters();
+    view.renderDropdown(characters);
+  }
+
   var _handlers = {
+    showDropdown: _showDropdown,
     createTag: _createTag,
     taggerFollow: _taggerFollow
   };

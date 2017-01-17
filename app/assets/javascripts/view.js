@@ -16,9 +16,10 @@ W.view = (function(){
     var topEdge = e.pageY - 50;
 
     $tagger.css({ left: leftEdge, top: topEdge})
+    $dropdown.css({ left: leftEdge, top: topEdge + 100})
   };
 
-  var initTag = function(e) {
+  var initTag = function() {
     var $tag = $('<div>')
       .addClass('tag new-tag')
       .css({
@@ -28,15 +29,27 @@ W.view = (function(){
     $imgContainer.append($tag)
   };
 
+  var renderDropdown = function(characters) {
+    characters.forEach(function(character) {
+      var $li = $('<li>');
+      $li.addClass('character');
+      $li.text(character);
+      $dropdown.append($li);
+    })
+    $dropdown.show()
+  };
+
   var _setDynamicElements = function() {
     $tagger = $('.tagging-cursor');
     $mainImg = $('.img-container img');
     $body = $('body');
     $imgContainer = $('.img-container');
+    $dropdown = $('.dropdown');
   };
 
   var _setHandlers = function(handlers) {
-    $mainImg.click(handlers.createTag);
+    $mainImg.click(handlers.showDropdown);  
+    $dropdown.submit(handlers.createTag);
     $imgContainer.mousemove(handlers.taggerFollow)
   };
 
@@ -50,7 +63,8 @@ W.view = (function(){
   return {
     init: init,
     moveTagger: moveTagger,
-    initTag: initTag
+    initTag: initTag,
+    renderDropdown: renderDropdown
   }
 
 }())

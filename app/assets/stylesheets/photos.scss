@@ -46,3 +46,18 @@ body {
 .new-tag {
   border-color: blue;
 }
+
+.dropdown {
+  position: absolute;
+  background: #ccc;
+  padding: 5px;
+  border: 1px solid #444;
+  border-radius: 5px;
+  list-style: none;
+  margin: 0;
+  display: none;
+
+  .character {
+    padding: 5px;
+  }
+}
