@@ -8,14 +8,8 @@ W.controller = (function(model, view){
     view.init(_handlers);
   };
 
-  var _createTag = function(e) {
-    // TODO .push(tag) into model if successful creation
-    // var tag = new Tag(e.pageX, e.pageY);
-    // var tag = model.createTag(x,y); view would find x and y from e
-    // view.initTag(tag);
-    view.initTag(e);
-    var characterId = $(e.target).data('id');
-    var tag = model.createTag(e.pageX, e.pageY, characterId);
+  var _createTag = function(x, y, characterId) {
+    var tag = model.createTag(x, y, characterId);
     view.renderTag(tag);
   };
 

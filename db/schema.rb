@@ -10,12 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170117030835) do
+ActiveRecord::Schema.define(version: 20170117175213) do
+
+  create_table "characters", force: :cascade do |t|
+    t.string   "name"
+    t.string   "thumb_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "characters_photos", force: :cascade do |t|
+    t.integer  "character_id"
+    t.integer  "photo_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["photo_id", "character_id"], name: "index_characters_photos_on_photo_id_and_character_id", unique: true
+  end
 
   create_table "photos", force: :cascade do |t|
     t.string   "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.integer  "character_id"
+    t.integer  "photo_id"
+    t.integer  "x"
+    t.integer  "y"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["character_id"], name: "index_tags_on_character_id"
+    t.index ["photo_id"], name: "index_tags_on_photo_id"
   end
 
 end

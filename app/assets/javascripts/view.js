@@ -21,15 +21,22 @@ W.view = (function(){
     $dropdown.css({ left: leftEdge, top: topEdge + 100})
   };
 
-  var renderTag = function() {
+  var renderTag = function(tag) {
+    console.log('rendering tag', tag.x, tag.y)
     var $tag = $('<div>')
       .addClass('tag new-tag')
       .css({
-        top: tag.top,
-        left: tag.left
+        left: tag.x,
+        top: tag.y
       })
       .attr('data-character', tag.characterId)
-    $imgContainer.append($tag)
+    var $hoverInfo = $('<span>').addClass('hover-info');
+    $hoverInfo.text(tag.getCharacter().name)
+    console.log(tag.getCharacter());
+    $tag.append($hoverInfo);
+    // $tag.append($('<span class="arrow-up">'));
+    $imgContainer.append($tag);
+    _setSearchHandlers();
   };
 
   var renderDropdown = function(characters) {
@@ -49,7 +56,12 @@ W.view = (function(){
 
   var _freezeTagger = function() {
     $imgContainer.off('mousemove');
-    $dropdown.on('click', '.character', _handlers.createTag);
+    $dropdown.on('click', '.character', function(e) {
+      var x = $tagger.css('left');
+      var y = $tagger.css('top');
+      var characterId = $(e.target).data('id');
+      _handlers.createTag(x, y, characterId);
+    });
   };
 
   var _attachCancelListener = function() {
@@ -102,7 +114,7 @@ W.view = (function(){
   return {
     init: init,
     moveTagger: moveTagger,
-    initTag: initTag,
+    renderTag: renderTag,
     renderDropdown: renderDropdown,
     listenForNewTag: listenForNewTag
   }
