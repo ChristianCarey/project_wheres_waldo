@@ -18,11 +18,10 @@ W.model = function() {
     this.left = left;
   };
 
-  var _Tag = function Tag(top, left) {
+  var _Tag = function Tag(top, left, id) {
     this.top = top;
     this.left = left;
-    this.active = true;
-    this.person = undefined;
+    this.characterId = id;
   };
 
   return {

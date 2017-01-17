@@ -21,21 +21,22 @@ W.view = (function(){
     $dropdown.css({ left: leftEdge, top: topEdge + 100})
   };
 
-  var initTag = function() {
+  var renderTag = function() {
     var $tag = $('<div>')
       .addClass('tag new-tag')
       .css({
-        top: $('.tagging-cursor').css('top'),
-        left: $('.tagging-cursor').css('left')
+        top: tag.top,
+        left: tag.left
       })
+      .attr('data-character', tag.characterId)
     $imgContainer.append($tag)
   };
 
   var renderDropdown = function(characters) {
     characters.forEach(function(character) {
       var $li = $('<li>');
-      $li.addClass('character');
-      $li.text(character);
+      $li.addClass('character').attr('data-id', character.id);
+      $li.text(character.name);
       $dropdown.append($li);
     })
     $dropdown.show();
@@ -48,7 +49,7 @@ W.view = (function(){
 
   var _freezeTagger = function() {
     $imgContainer.off('mousemove');
-    $dropdown.submit(_handlers.createTag);
+    $dropdown.on('click', '.character', _handlers.createTag);
   };
 
   var _attachCancelListener = function() {

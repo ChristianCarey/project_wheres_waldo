@@ -8,12 +8,15 @@ W.controller = (function(model, view){
     view.init(_handlers);
   };
 
-  var _createTag = function() {
+  var _createTag = function(e) {
     // TODO .push(tag) into model if successful creation
     // var tag = new Tag(e.pageX, e.pageY);
     // var tag = model.createTag(x,y); view would find x and y from e
     // view.initTag(tag);
     view.initTag(e);
+    var characterId = $(e.target).data('id');
+    var tag = model.createTag(e.pageX, e.pageY, characterId);
+    view.renderTag(tag);
   };
 
   var _showDropdown = function() {
@@ -24,7 +27,8 @@ W.controller = (function(model, view){
 
   var _handlers = {
     showDropdown: _showDropdown,
-    createTag: _createTag
+    createTag: _createTag,
+
   };
 
   return {
