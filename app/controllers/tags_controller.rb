@@ -5,13 +5,21 @@ class TagsController < ApplicationController
     if @tag.save
       respond_to do |format|
         format.html {}
-        format.json { render @tag }
+        format.json { render @tag, locals: { tag: @tag } }
       end
     else
       respond_to do |format|
         format.html {}
         format.json {}
       end
+    end
+  end
+
+  def index
+    @photo = Photo.find(params[:photo_id])
+    respond_to do |format|
+      format.json
+      format.html
     end
   end
 

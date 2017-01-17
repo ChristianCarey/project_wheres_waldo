@@ -23,7 +23,6 @@ W.view = (function(){
   };
 
   var renderTag = function(tag) {
-    console.log(tag)
     var $tag = $('<div>')
       .addClass('tag new-tag')
       .css({
@@ -33,12 +32,16 @@ W.view = (function(){
       .attr('data-character', tag.character.id)
     var $hoverInfo = $('<span>').addClass('hover-info');
     $hoverInfo.text(tag.character.name)
-    // console.log(tag.getCharacter());
     $tag.append($hoverInfo);
+    $tag.append($('<span class="delete-tag">').text('x'));
     // $tag.append($('<span class="arrow-up">'));
     $imgContainer.append($tag);
     _setSearchHandlers();
   };
+
+  var renderBatchTags = function(tags) {
+    tags.forEach(renderTag);
+  }
 
   var renderDropdown = function(characters) {
     characters.forEach(function(character) {
@@ -128,7 +131,8 @@ W.view = (function(){
     renderTag: renderTag,
     renderDropdown: renderDropdown,
     listenForNewTag: listenForNewTag,
-    getPhotoId: getPhotoId
+    getPhotoId: getPhotoId,
+    renderBatchTags: renderBatchTags
   }
 
 }())

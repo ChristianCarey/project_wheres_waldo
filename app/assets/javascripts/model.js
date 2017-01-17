@@ -3,9 +3,13 @@ var W = W || {};
 W.model = function() {
 
   var init = function(photoId) {
-    _fetchCharacters(photoId).done(function(characters) {
+    PHOTO_ID = photoId;
+    return $.when(_fetchCharacters(photoId).done(function(characters) {
       _characters = characters;
-    })
+    }),
+    _fetchTags(photoId).done(function(tags) {
+      _tags = tags
+    }))
   };
 
   var getCharacters = function() {
@@ -19,18 +23,23 @@ W.model = function() {
           x: x,
           y: y
         }
+    var url = '/photos/' + PHOTO_ID + '/tags.json';
+        console.log(url)
     _toggleTagged(characterId);
     return $.ajax({
       method: 'POST',
       data: { "tag": tagData },
-      url: '/tags.json',
+      url: url,
       error: function(err) {
-        console.log(err)
+        console.log(err.responseText);
+      },
+      success: function(newTag) {
+        _tags.push(newTag);
       }
     })
   }
 
-  var _characters, _tags = [];
+  var _characters, _tags = [], PHOTO_ID;
 
   var _toggleTagged = function(characterId) {
     var character = _findCharacter(characterId);
@@ -39,6 +48,10 @@ W.model = function() {
 
   var _fetchCharacters = function(photoId) {
     return $.get('/photos/' + photoId + "/characters.json");
+  }
+
+  var _fetchTags = function(photoId) {
+    return $.get('/photos/' + photoId + '/tags.json')
   }
 
   var _Dropdown = function Dropdown(items, top, left) {
@@ -53,10 +66,15 @@ W.model = function() {
     })[0];
   };
 
+  var getTags = function() {
+    return _tags;
+  }
   return {
     getCharacters: getCharacters,
     init: init,
-    createTag: createTag
+    createTag: createTag,
+    getTags: getTags
   }
+
 
 }();

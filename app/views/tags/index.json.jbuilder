@@ -1,0 +1,1 @@
+json.partial! "tags/tag", collection: @photo.tags, as: :tag

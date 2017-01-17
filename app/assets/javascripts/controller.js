@@ -5,7 +5,10 @@ W.controller = (function(model, view){
 
   var init = function() {
     view.init(_handlers);
-    model.init(view.getPhotoId());
+    model.init(view.getPhotoId())
+      .then(function() {
+        view.renderBatchTags(model.getTags())
+      })
   };
 
   var _createTag = function(x, y, characterId, photoId) {
