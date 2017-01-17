@@ -4,8 +4,8 @@ W.controller = (function(model, view){
   var Tag, Dropdown;
 
   var init = function() {
-    model.init();
     view.init(_handlers);
+    model.init(view.getPhotoId());
   };
 
   var _createTag = function(x, y, characterId, photoId) {

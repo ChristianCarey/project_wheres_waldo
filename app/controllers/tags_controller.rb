@@ -5,7 +5,7 @@ class TagsController < ApplicationController
     if @tag.save
       respond_to do |format|
         format.html {}
-        format.json { render json: @tag }
+        format.json { render @tag }
       end
     else
       respond_to do |format|

@@ -2,8 +2,8 @@ var W = W || {};
 
 W.model = function() {
 
-  var init = function() {
-    _fetchCharacters().done(function(characters) {
+  var init = function(photoId) {
+    _fetchCharacters(photoId).done(function(characters) {
       _characters = characters;
     })
   };
@@ -19,6 +19,7 @@ W.model = function() {
           x: x,
           y: y
         }
+    _toggleTagged(characterId);
     return $.ajax({
       method: 'POST',
       data: { "tag": tagData },
@@ -31,8 +32,13 @@ W.model = function() {
 
   var _characters, _tags = [];
 
-  var _fetchCharacters = function() {
-    
+  var _toggleTagged = function(characterId) {
+    var character = _findCharacter(characterId);
+    character.tagged = !character.tagged;
+  };
+
+  var _fetchCharacters = function(photoId) {
+    return $.get('/photos/' + photoId + "/characters.json");
   }
 
   var _Dropdown = function Dropdown(items, top, left) {

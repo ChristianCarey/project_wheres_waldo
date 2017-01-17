@@ -75,7 +75,12 @@ body {
 
   .character {
     padding: 5px;
+    color: #888;
+  }
+
+  .untagged {
     cursor: pointer;
+    color: black;
 
     &:hover {
       background: #777;

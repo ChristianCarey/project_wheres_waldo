@@ -10,6 +10,7 @@ W.view = (function(){
     _setDynamicElements();
     _setConstants();
     _setSearchHandlers();
+    _setCreateTagHandler();
   };
 
   var moveTagger = function(x, y) {
@@ -22,16 +23,16 @@ W.view = (function(){
   };
 
   var renderTag = function(tag) {
-    console.log('rendering tag', tag.x, tag.y)
+    console.log(tag)
     var $tag = $('<div>')
       .addClass('tag new-tag')
       .css({
         left: tag.x,
         top: tag.y
       })
-      .attr('data-character', tag.characterId)
+      .attr('data-character', tag.character.id)
     var $hoverInfo = $('<span>').addClass('hover-info');
-    $hoverInfo.text(tag.getCharacter().name)
+    $hoverInfo.text(tag.character.name)
     // console.log(tag.getCharacter());
     $tag.append($hoverInfo);
     // $tag.append($('<span class="arrow-up">'));
@@ -43,6 +44,9 @@ W.view = (function(){
     characters.forEach(function(character) {
       var $li = $('<li>');
       $li.addClass('character').attr('data-id', character.id);
+      if (!character.tagged) {
+        $li.addClass('untagged');
+      }
       $li.text(character.name);
       $dropdown.append($li);
     })
@@ -54,14 +58,12 @@ W.view = (function(){
     _attachCancelListener();
   }
 
+  var getPhotoId = function() {
+    return PHOTO_ID;
+  }
+
   var _freezeTagger = function() {
     $imgContainer.off('mousemove');
-    $dropdown.on('click', '.character', function(e) {
-      var x = $tagger.css('left');
-      var y = $tagger.css('top');
-      var characterId = $(e.target).data('id');
-      _handlers.createTag(x, y, characterId, PHOTO_ID);
-    });
   };
 
   var _attachCancelListener = function() {
@@ -111,12 +113,22 @@ W.view = (function(){
     PHOTO_ID = $('.image').data('id');
   }
 
+  var _setCreateTagHandler = function() {
+    $dropdown.on('click', '.untagged', function(e) {
+      var x = $tagger.css('left');
+      var y = $tagger.css('top');
+      var characterId = $(e.target).data('id');
+      _handlers.createTag(x, y, characterId, PHOTO_ID);
+    });
+  }
+
   return {
     init: init,
     moveTagger: moveTagger,
     renderTag: renderTag,
     renderDropdown: renderDropdown,
-    listenForNewTag: listenForNewTag
+    listenForNewTag: listenForNewTag,
+    getPhotoId: getPhotoId
   }
 
 }())
