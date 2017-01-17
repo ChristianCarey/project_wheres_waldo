@@ -1,0 +1,48 @@
+// Place all the styles related to the photos controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+///////// Photo Tagging //////////
+body {
+  position: relative;
+  margin: 0;
+}
+.tagging-cursor {
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  border: 5px solid red;
+  position: absolute;
+  top: 80px;
+  left: 0px;
+  box-sizing: border-box;
+  // display: none;
+  pointer-events: none;
+}
+
+.img-container {
+  display: inline-block;
+  height: 880px;
+  width: 1400px;
+  img {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.showing {
+  display: block;
+}
+
+.tag {
+  height: 100px;
+  width: 100px;
+  border: 2px solid green;
+  pointer-events: none;
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.new-tag {
+  border-color: blue;
+}
